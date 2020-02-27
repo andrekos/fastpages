@@ -6,7 +6,7 @@
 
 https://andrekos.github.io/fastpages/
 
-# My Blog
+# My Blog 1
 
 
 _powered by [fastpages](https://github.com/fastai/fastpages)_
