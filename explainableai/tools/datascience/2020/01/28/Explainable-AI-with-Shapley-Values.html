@@ -3,19 +3,19 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="shortcut icon" type="image/x-icon" href="/fastpages/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Title | fastpages</title>
+<title>Explainable AI with Shapley values | fastpages</title>
 <meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="Title" />
+<meta property="og:title" content="Explainable AI with Shapley values" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="summary" />
-<meta property="og:description" content="summary" />
-<link rel="canonical" href="https://andreykostenko.com/fastpages/2020/01/28/Explainable-AI-with-Shapley-Values.html" />
-<meta property="og:url" content="https://andreykostenko.com/fastpages/2020/01/28/Explainable-AI-with-Shapley-Values.html" />
+<meta name="description" content="Introduction to explaining machine learning models with Shapley values" />
+<meta property="og:description" content="Introduction to explaining machine learning models with Shapley values" />
+<link rel="canonical" href="https://andreykostenko.com/fastpages/explainableai/tools/datascience/2020/01/28/Explainable-AI-with-Shapley-Values.html" />
+<meta property="og:url" content="https://andreykostenko.com/fastpages/explainableai/tools/datascience/2020/01/28/Explainable-AI-with-Shapley-Values.html" />
 <meta property="og:site_name" content="fastpages" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-01-28T00:00:00-06:00" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://andreykostenko.com/fastpages/2020/01/28/Explainable-AI-with-Shapley-Values.html"},"description":"summary","@type":"BlogPosting","url":"https://andreykostenko.com/fastpages/2020/01/28/Explainable-AI-with-Shapley-Values.html","headline":"Title","dateModified":"2020-01-28T00:00:00-06:00","datePublished":"2020-01-28T00:00:00-06:00","@context":"https://schema.org"}</script>
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://andreykostenko.com/fastpages/explainableai/tools/datascience/2020/01/28/Explainable-AI-with-Shapley-Values.html"},"description":"Introduction to explaining machine learning models with Shapley values","@type":"BlogPosting","url":"https://andreykostenko.com/fastpages/explainableai/tools/datascience/2020/01/28/Explainable-AI-with-Shapley-Values.html","headline":"Explainable AI with Shapley values","dateModified":"2020-01-28T00:00:00-06:00","datePublished":"2020-01-28T00:00:00-06:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
   <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -74,7 +74,7 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Title</h1><p class="page-description">summary</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-01-28T00:00:00-06:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Explainable AI with Shapley values</h1><p class="page-description">Introduction to explaining machine learning models with Shapley values</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-01-28T00:00:00-06:00" itemprop="datePublished">
         Jan 28, 2020
       </time>
        • <span class="read-time" title="Estimated read time">
@@ -84,6 +84,19 @@
     
 </span></p>
 
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/fastpages/categories/#eXplainableAI">eXplainableAI</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/fastpages/categories/#tools">tools</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/fastpages/categories/#DataScience">DataScience</a>
+        
+      
+      </p>
     
 
     
@@ -102,7 +115,22 @@
       </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <!--
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#Explainable-AI-with-Shapley-values">Explainable AI with Shapley values¶</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#Explaining-a-linear-regression-model">Explaining a linear regression model¶</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Examining-the-model-coefficeints">Examining the model coefficeints¶</a></li>
+<li class="toc-entry toc-h3"><a href="#A-more-complete-picture-using-partial-dependence-plots">A more complete picture using partial dependence plots¶</a></li>
+<li class="toc-entry toc-h3"><a href="#Reading-SHAP-values-from-partial-dependence-plots">Reading SHAP values from partial dependence plots¶</a></li>
+<li class="toc-entry toc-h3"><a href="#The-additive-nature-of-SHAP-values">The additive nature of SHAP values¶</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#Explaining-an-additive-regression-model-(depth-1-XGBoost-model)">Explaining an additive regression model (depth-1 XGBoost model)¶</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#In-Progress...-more-to-be-written...">In Progress... more to be written...¶</a></li>
+</ul><!--
 #################################################
 ### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
 #################################################
@@ -118,30 +146,13 @@
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<hr />
-<ul>
-<li>title: "Explainable AI with Shapley values"</li>
-<li>summary: "Introduction to explaining machine learning models with Shapley values"</li>
-<li>toc: true</li>
-<li>branch: master</li>
-<li>badges: true</li>
-<li>comments: true</li>
-<li>image: images/some_folder/your_image.png</li>
-<li>categories: [eXplainableAI, tools, DataScience]</li>
-<li>metadata_key1: metadata_value1</li>
-<li>metadata_key2: metadata_value2</li>
-<li>show_tags: true</li>
-</ul>
-<hr />
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Explainable-AI-with-Shapley-values">Explainable AI with Shapley values<a class="anchor-link" href="#Explainable-AI-with-Shapley-values">&#182;</a></h1><p>This is an introduction to explaining machine learning models with Shapley values. Shapley values are a widely used approach from cooperative game theory that come with desirable properties. This tutorial is designed to help build a solid understanding of how to compute and interpet Shapley-based explanations of machine learning models. We will take a practical hands-on approach, and learn by example using the <code>shap</code> Python package to explain progressively more complex models. This is a living document, and the serves as an introduction to the <code>shap</code> Python package. So if you have feedback or contributions please open an issue or pull request to make this tutorial better!</p>
+<h1 id="Explainable-AI-with-Shapley-values">
+<a class="anchor" href="#Explainable-AI-with-Shapley-values" aria-hidden="true"><span class="octicon octicon-link"></span></a>Explainable AI with Shapley values<a class="anchor-link" href="#Explainable-AI-with-Shapley-values">¶</a>
+</h1>
+<p>This is an introduction to explaining machine learning models with Shapley values. Shapley values are a widely used approach from cooperative game theory that come with desirable properties. This tutorial is designed to help build a solid understanding of how to compute and interpet Shapley-based explanations of machine learning models. We will take a practical hands-on approach, and learn by example using the <code>shap</code> Python package to explain progressively more complex models. This is a living document, and the serves as an introduction to the <code>shap</code> Python package. So if you have feedback or contributions please open an issue or pull request to make this tutorial better!</p>
 <p><strong>Note this document is not yet complete, so there will be a lot missing still.</strong></p>
 <!--
 There are many research papers that dive into the specifics 
@@ -162,9 +173,13 @@ But it is not enough to just be theoretically grounded and computationally effic
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Explaining-a-linear-regression-model">Explaining a linear regression model<a class="anchor-link" href="#Explaining-a-linear-regression-model">&#182;</a></h2><p>Before using Shapley values to explain complicated models, it is helpful to understand how they work for simple models. One of the simplest model types is standard linear regression, and so below we train a linear regression model on the classic <a href="https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html">boston housing dataset</a>. This dataset consists of 506 neighboorhood regions around Boston in 1978, where our goal is to predict the median home price (in thousands) in each neighboorhood from 14 different features:</p>
+<h2 id="Explaining-a-linear-regression-model">
+<a class="anchor" href="#Explaining-a-linear-regression-model" aria-hidden="true"><span class="octicon octicon-link"></span></a>Explaining a linear regression model<a class="anchor-link" href="#Explaining-a-linear-regression-model">¶</a>
+</h2>
+<p>Before using Shapley values to explain complicated models, it is helpful to understand how they work for simple models. One of the simplest model types is standard linear regression, and so below we train a linear regression model on the classic <a href="https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html">boston housing dataset</a>. This dataset consists of 506 neighboorhood regions around Boston in 1978, where our goal is to predict the median home price (in thousands) in each neighboorhood from 14 different features:</p>
 <ol>
 <li>CRIM - per capita crime rate by town</li>
 <li>ZN - proportion of residential land zoned for lots over 25,000 sq.ft.</li>
@@ -226,9 +241,13 @@ But it is not enough to just be theoretically grounded and computationally effic
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Examining-the-model-coefficeints">Examining the model coefficeints<a class="anchor-link" href="#Examining-the-model-coefficeints">&#182;</a></h3><p>The most common way of understanding a linear model is to examine the coefficients learned for each feature. These coefficients tell us how much the model output changes when we change each of the input features:</p>
+<h3 id="Examining-the-model-coefficeints">
+<a class="anchor" href="#Examining-the-model-coefficeints" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examining the model coefficeints<a class="anchor-link" href="#Examining-the-model-coefficeints">¶</a>
+</h3>
+<p>The most common way of understanding a linear model is to examine the coefficients learned for each feature. These coefficients tell us how much the model output changes when we change each of the input features:</p>
 
 </div>
 </div>
@@ -240,9 +259,9 @@ But it is not enough to just be theoretically grounded and computationally effic
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model coefficients:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"Model coefficients:</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">"="</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -280,10 +299,14 @@ LSTAT = -0.5248
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>While coefficents are great for telling us what will happen when we change the value of an input feature, by themselves they are not a great way to measure the overall importance of a feature. This is because the value of each coeffient depends on the scale of the input features. If for example we were to measure the age of a home in minutes instead of years, then the coeffiect for the AGE feature would become $0.0007 * 365 * 24 * 60 = 367.92$. Clearly the number of minutes since a house was built is not more important than the number of years, yet it's coeffiecent value is much larger. This means that the magnitude of a coeffient is not nessecarily a good measure of a feature's importance in a linear model.</p>
-<h3 id="A-more-complete-picture-using-partial-dependence-plots">A more complete picture using partial dependence plots<a class="anchor-link" href="#A-more-complete-picture-using-partial-dependence-plots">&#182;</a></h3><p>To understand a feature's importance in a model it is necessary to understand both how changing that feature impacts the model's output, and also the distribution of that feature's values. To visualize this for a linear model we can build a classical partial dependence plot and show the distribution of feature values as a histogram on the x-axis:</p>
+<h3 id="A-more-complete-picture-using-partial-dependence-plots">
+<a class="anchor" href="#A-more-complete-picture-using-partial-dependence-plots" aria-hidden="true"><span class="octicon octicon-link"></span></a>A more complete picture using partial dependence plots<a class="anchor-link" href="#A-more-complete-picture-using-partial-dependence-plots">¶</a>
+</h3>
+<p>To understand a feature's importance in a model it is necessary to understand both how changing that feature impacts the model's output, and also the distribution of that feature's values. To visualize this for a linear model we can build a classical partial dependence plot and show the distribution of feature values as a histogram on the x-axis:</p>
 
 </div>
 </div>
@@ -295,8 +318,8 @@ LSTAT = -0.5248
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
-<span class="n">shap</span><span class="o">.</span><span class="n">partial_dependence_plot</span><span class="p">(</span><span class="s2">&quot;AGE&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">model_expected_value</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">feature_expected_value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = 'retina'
+<span class="n">shap</span><span class="o">.</span><span class="n">partial_dependence_plot</span><span class="p">(</span><span class="s2">"AGE"</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">model_expected_value</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">feature_expected_value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -326,16 +349,21 @@ height=279
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The gray horizontal line in the plot above represents the expected value of the model when applied to the boston housing dataset. The vertical gray line represents the average value of the AGE feature. Note that the blue partial dependence plot line (which the is average value of the model output when we fix the AGE feature to a given value) always passes through the interesection of the two gray expected value lines. We can consider this intersection point as the "center" of the partial dependence plot with respect to the data distribution. The impact of this centering will become clear when we turn to Shapley values next.</p>
 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Reading-SHAP-values-from-partial-dependence-plots">Reading SHAP values from partial dependence plots<a class="anchor-link" href="#Reading-SHAP-values-from-partial-dependence-plots">&#182;</a></h3><p>The core idea behind Shapley value based explanations of machine learning models is to use fair allocation results from cooperative game theory to allocate credit for a model's output $f(x)$ among its input features [cite]. In order to connect game theory with machine learning models it is nessecary to both match a model's input features with players in a game, and also match the model function with the rules of the game. Since in game theory a player can join or not join a game, we need a way for a feature to "join" or "not join" a model. The most common way to define what it means for a feature to "join" a model is to say that feature has "joined a model" when we know the value of that feature, and it has not joined a model when we don't know the value of that feature. To evaluate an existing model $f$ when only a subset $S$ of features are part of the model we integrate out the other features using a conditional expectated value formulation. This formulation can take two forms:</p>
+<h3 id="Reading-SHAP-values-from-partial-dependence-plots">
+<a class="anchor" href="#Reading-SHAP-values-from-partial-dependence-plots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reading SHAP values from partial dependence plots<a class="anchor-link" href="#Reading-SHAP-values-from-partial-dependence-plots">¶</a>
+</h3>
+<p>The core idea behind Shapley value based explanations of machine learning models is to use fair allocation results from cooperative game theory to allocate credit for a model's output $f(x)$ among its input features [cite]. In order to connect game theory with machine learning models it is nessecary to both match a model's input features with players in a game, and also match the model function with the rules of the game. Since in game theory a player can join or not join a game, we need a way for a feature to "join" or "not join" a model. The most common way to define what it means for a feature to "join" a model is to say that feature has "joined a model" when we know the value of that feature, and it has not joined a model when we don't know the value of that feature. To evaluate an existing model $f$ when only a subset $S$ of features are part of the model we integrate out the other features using a conditional expectated value formulation. This formulation can take two forms:</p>
 $$
 E[f(X) \mid X_S = x_S]
 $$<center>or</center>$$
@@ -360,7 +388,7 @@ $$<p>In the first form assumes that we know the values of the features in S beca
 <span class="c1"># make a standard partial dependence plot</span>
 <span class="n">sample_ind</span> <span class="o">=</span> <span class="mi">18</span>
 <span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">shap</span><span class="o">.</span><span class="n">partial_dependence_plot</span><span class="p">(</span>
-    <span class="s2">&quot;AGE&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">model_expected_value</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="s2">"AGE"</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">model_expected_value</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">feature_expected_value</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">shap_values</span><span class="o">=</span><span class="n">shap_values</span><span class="p">[</span><span class="n">sample_ind</span><span class="p">:</span><span class="n">sample_ind</span><span class="o">+</span><span class="mi">1</span><span class="p">,:],</span>
     <span class="n">shap_value_features</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">sample_ind</span><span class="p">:</span><span class="n">sample_ind</span><span class="o">+</span><span class="mi">1</span><span class="p">,:]</span>
@@ -394,7 +422,8 @@ height=279
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The close correspondence between the classic partial dependence plot and SHAP values means that if we plot the SHAP value for a specific feature across a whole dataset we will exactly trace out a mean centered version of the partial dependence plot for that feature:</p>
 
@@ -408,7 +437,7 @@ height=279
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">shap</span><span class="o">.</span><span class="n">dependence_plot</span><span class="p">(</span><span class="s2">&quot;AGE&quot;</span><span class="p">,</span> <span class="n">shap_values</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">interaction_index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">shap</span><span class="o">.</span><span class="n">dependence_plot</span><span class="p">(</span><span class="s2">"AGE"</span><span class="p">,</span> <span class="n">shap_values</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">interaction_index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -438,9 +467,13 @@ height=320
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="The-additive-nature-of-SHAP-values">The additive nature of SHAP values<a class="anchor-link" href="#The-additive-nature-of-SHAP-values">&#182;</a></h3><p>One the fundemental properties of Shapley values is that they always sum up to the difference between the game outcome when all players are present and the game outcome when no players are present. For machine learning models this means that SHAP values of all the input features will always sum up to the difference between expected model output and the current model output for the prediction being explained. The easiest way to see this is through a waterfall plot that starts our background prior expectation for a home price $E[f(X)]$, and then adds features one at a time until we reach the current model output $f(x)$:</p>
+<h3 id="The-additive-nature-of-SHAP-values">
+<a class="anchor" href="#The-additive-nature-of-SHAP-values" aria-hidden="true"><span class="octicon octicon-link"></span></a>The additive nature of SHAP values<a class="anchor-link" href="#The-additive-nature-of-SHAP-values">¶</a>
+</h3>
+<p>One the fundemental properties of Shapley values is that they always sum up to the difference between the game outcome when all players are present and the game outcome when no players are present. For machine learning models this means that SHAP values of all the input features will always sum up to the difference between expected model output and the current model output for the prediction being explained. The easiest way to see this is through a waterfall plot that starts our background prior expectation for a home price $E[f(X)]$, and then adds features one at a time until we reach the current model output $f(x)$:</p>
 
 </div>
 </div>
@@ -483,9 +516,13 @@ height=505
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Explaining-an-additive-regression-model-(depth-1-XGBoost-model)">Explaining an additive regression model (depth-1 XGBoost model)<a class="anchor-link" href="#Explaining-an-additive-regression-model-(depth-1-XGBoost-model)">&#182;</a></h2><p>The reason the partial dependence plots of linear models have such a close connection to SHAP values is because each feature in the model is handled independently of every other feature (the effects are just added together). We can keep this additive nature while relaxing the linear requirement of straight lines. This results in the well-known class of generalized additive models (GAMs). While there are many ways to train these types of models, we will use the easy approach of depth-1 gradient boosted decision trees in XGBoost (for slightly slower but more accurate alternative see InterpretMLs explainable boosting machines).</p>
+<h2 id="Explaining-an-additive-regression-model-(depth-1-XGBoost-model)">
+<a class="anchor" href="#Explaining-an-additive-regression-model-(depth-1-XGBoost-model)" aria-hidden="true"><span class="octicon octicon-link"></span></a>Explaining an additive regression model (depth-1 XGBoost model)<a class="anchor-link" href="#Explaining-an-additive-regression-model-(depth-1-XGBoost-model)">¶</a>
+</h2>
+<p>The reason the partial dependence plots of linear models have such a close connection to SHAP values is because each feature in the model is handled independently of every other feature (the effects are just added together). We can keep this additive nature while relaxing the linear requirement of straight lines. This results in the well-known class of generalized additive models (GAMs). While there are many ways to train these types of models, we will use the easy approach of depth-1 gradient boosted decision trees in XGBoost (for slightly slower but more accurate alternative see InterpretMLs explainable boosting machines).</p>
 
 </div>
 </div>
@@ -508,7 +545,7 @@ height=505
 
 <span class="c1"># make a standard partial dependence plot with a single SHAP value overlaid</span>
 <span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">shap</span><span class="o">.</span><span class="n">partial_dependence_plot</span><span class="p">(</span>
-    <span class="s2">&quot;AGE&quot;</span><span class="p">,</span> <span class="n">model_ebm</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">model_expected_value</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="s2">"AGE"</span><span class="p">,</span> <span class="n">model_ebm</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">model_expected_value</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">feature_expected_value</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">shap_values</span><span class="o">=</span><span class="n">shap_values_ebm</span><span class="p">[</span><span class="n">sample_ind</span><span class="p">:</span><span class="n">sample_ind</span><span class="o">+</span><span class="mi">1</span><span class="p">,:],</span>
     <span class="n">shap_value_features</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">sample_ind</span><span class="p">:</span><span class="n">sample_ind</span><span class="o">+</span><span class="mi">1</span><span class="p">,:]</span>
@@ -618,16 +655,27 @@ height=416
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="In-Progress...-more-to-be-written...">In Progress... more to be written...<a class="anchor-link" href="#In-Progress...-more-to-be-written...">&#182;</a></h1>
+<h1 id="In-Progress...-more-to-be-written...">
+<a class="anchor" href="#In-Progress...-more-to-be-written..." aria-hidden="true"><span class="octicon octicon-link"></span></a>In Progress... more to be written...<a class="anchor-link" href="#In-Progress...-more-to-be-written...">¶</a>
+</h1>
 </div>
 </div>
 </div>
 </div>
 
 
-  </div><a class="u-url" href="/fastpages/2020/01/28/Explainable-AI-with-Shapley-Values.html" hidden></a>
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="andrekos/fastpages"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/fastpages/explainableai/tools/datascience/2020/01/28/Explainable-AI-with-Shapley-Values.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">

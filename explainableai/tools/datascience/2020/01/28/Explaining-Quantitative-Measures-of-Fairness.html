@@ -3,19 +3,19 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="shortcut icon" type="image/x-icon" href="/fastpages/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Title | fastpages</title>
+<title>Explaining Measures of Fairness with SHAP | fastpages</title>
 <meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="Title" />
+<meta property="og:title" content="Explaining Measures of Fairness with SHAP" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="summary" />
-<meta property="og:description" content="summary" />
-<link rel="canonical" href="https://andreykostenko.com/fastpages/2020/01/28/Explaining-Quantitative-Measures-of-Fairness.html" />
-<meta property="og:url" content="https://andreykostenko.com/fastpages/2020/01/28/Explaining-Quantitative-Measures-of-Fairness.html" />
+<meta name="description" content="This hands-on article connects explainable AI methods with fairness measures and shows how modern explainability methods can enhance the usefulness of quantitative fairness metrics." />
+<meta property="og:description" content="This hands-on article connects explainable AI methods with fairness measures and shows how modern explainability methods can enhance the usefulness of quantitative fairness metrics." />
+<link rel="canonical" href="https://andreykostenko.com/fastpages/explainableai/tools/datascience/2020/01/28/Explaining-Quantitative-Measures-of-Fairness.html" />
+<meta property="og:url" content="https://andreykostenko.com/fastpages/explainableai/tools/datascience/2020/01/28/Explaining-Quantitative-Measures-of-Fairness.html" />
 <meta property="og:site_name" content="fastpages" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-01-28T00:00:00-06:00" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"https://andreykostenko.com/fastpages/2020/01/28/Explaining-Quantitative-Measures-of-Fairness.html"},"description":"summary","@type":"BlogPosting","url":"https://andreykostenko.com/fastpages/2020/01/28/Explaining-Quantitative-Measures-of-Fairness.html","headline":"Title","dateModified":"2020-01-28T00:00:00-06:00","datePublished":"2020-01-28T00:00:00-06:00","@context":"https://schema.org"}</script>
+{"mainEntityOfPage":{"@type":"WebPage","@id":"https://andreykostenko.com/fastpages/explainableai/tools/datascience/2020/01/28/Explaining-Quantitative-Measures-of-Fairness.html"},"description":"This hands-on article connects explainable AI methods with fairness measures and shows how modern explainability methods can enhance the usefulness of quantitative fairness metrics.","@type":"BlogPosting","url":"https://andreykostenko.com/fastpages/explainableai/tools/datascience/2020/01/28/Explaining-Quantitative-Measures-of-Fairness.html","headline":"Explaining Measures of Fairness with SHAP","dateModified":"2020-01-28T00:00:00-06:00","datePublished":"2020-01-28T00:00:00-06:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
   <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -74,7 +74,7 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Title</h1><p class="page-description">summary</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-01-28T00:00:00-06:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Explaining Measures of Fairness with SHAP</h1><p class="page-description">This hands-on article connects explainable AI methods with fairness measures and shows how modern explainability methods can enhance the usefulness of quantitative fairness metrics.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-01-28T00:00:00-06:00" itemprop="datePublished">
         Jan 28, 2020
       </time>
        • <span class="read-time" title="Estimated read time">
@@ -84,6 +84,19 @@
     
 </span></p>
 
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/fastpages/categories/#eXplainableAI">eXplainableAI</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/fastpages/categories/#tools">tools</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/fastpages/categories/#DataScience">DataScience</a>
+        
+      
+      </p>
     
 
     
@@ -102,7 +115,22 @@
       </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <!--
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#Explaining-Measures-of-Fairness-with-SHAP">Explaining Measures of Fairness with SHAP¶</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#How-SHAP-can-be-used-to-explain-various-measures-of-model-fairness">How SHAP can be used to explain various measures of model fairness¶</a></li>
+<li class="toc-entry toc-h2"><a href="#What-SHAP-fairness-explanations-look-like-in-various-simulated-scenarios">What SHAP fairness explanations look like in various simulated scenarios¶</a></li>
+<li class="toc-entry toc-h2"><a href="#Scenario-A:-No-reporting-errors">Scenario A: No reporting errors¶</a></li>
+<li class="toc-entry toc-h2"><a href="#Scenario-B:-An-under-reporting-bias-for-women's-income">Scenario B: An under-reporting bias for women&#39;s income¶</a></li>
+<li class="toc-entry toc-h2"><a href="#Scenario-C:-An-under-reporting-bias-for-women's-late-payments">Scenario C: An under-reporting bias for women&#39;s late payments¶</a></li>
+<li class="toc-entry toc-h2"><a href="#Scenario-D:-An-under-reporting-bias-for-women's-default-rates">Scenario D: An under-reporting bias for women&#39;s default rates¶</a></li>
+<li class="toc-entry toc-h2"><a href="#Scenario-E:-An-under-reporting-bias-for-women's-default-rates,-take-2">Scenario E: An under-reporting bias for women&#39;s default rates, take 2¶</a></li>
+<li class="toc-entry toc-h2"><a href="#Scenario-F:-Teasing-apart-multiple-under-reporting-biases">Scenario F: Teasing apart multiple under-reporting biases¶</a></li>
+<li class="toc-entry toc-h2"><a href="#How-introducing-a-protected-feature-can-help-distinguish-between-label-bias-and-feature-bias">How introducing a protected feature can help distinguish between label bias and feature bias¶</a></li>
+<li class="toc-entry toc-h2"><a href="#Conclusion">Conclusion¶</a></li>
+</ul>
+</li>
+</ul><!--
 #################################################
 ### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
 #################################################
@@ -118,27 +146,13 @@
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<hr />
-<ul>
-<li>title: "Explaining Measures of Fairness with SHAP"</li>
-<li>summary: "This hands-on article connects explainable AI methods with fairness measures and shows how modern explainability methods can enhance the usefulness of quantitative fairness metrics."</li>
-<li>toc: true</li>
-<li>branch: master</li>
-<li>badges: true</li>
-<li>comments: true</li>
-<li>image: images/some_folder/your_image.png</li>
-<li>categories: [eXplainableAI, tools, fairness]</li>
-</ul>
-<hr />
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Explaining-Measures-of-Fairness-with-SHAP">Explaining Measures of Fairness with SHAP<a class="anchor-link" href="#Explaining-Measures-of-Fairness-with-SHAP">&#182;</a></h1><p>This hands-on article connects explainable AI methods with fairness measures and shows how modern explainability methods can enhance the usefulness of quantitative fairness metrics. By using <a href="http://github.com/slundberg/shap">SHAP</a> (a popular explainable AI tool) we can decompose measures of fairness and allocate responsibility for any observed disparity among each of the model's input features. Explaining these quantitative fairness metrics can reduce the concerning tendency to rely on them as opaque standards of fairness, and instead promote their informed use as tools for understanding how model behavior differs between groups.</p>
+<h1 id="Explaining-Measures-of-Fairness-with-SHAP">
+<a class="anchor" href="#Explaining-Measures-of-Fairness-with-SHAP" aria-hidden="true"><span class="octicon octicon-link"></span></a>Explaining Measures of Fairness with SHAP<a class="anchor-link" href="#Explaining-Measures-of-Fairness-with-SHAP">¶</a>
+</h1>
+<p>This hands-on article connects explainable AI methods with fairness measures and shows how modern explainability methods can enhance the usefulness of quantitative fairness metrics. By using <a href="http://github.com/slundberg/shap">SHAP</a> (a popular explainable AI tool) we can decompose measures of fairness and allocate responsibility for any observed disparity among each of the model's input features. Explaining these quantitative fairness metrics can reduce the concerning tendency to rely on them as opaque standards of fairness, and instead promote their informed use as tools for understanding how model behavior differs between groups.</p>
 <p>Quantitative fairness metrics seek to bring mathematical precision to the definition of fairness in machine learning [<a href="https://books.google.com/books/about/The_Ethical_Algorithm.html?id=QmmtDwAAQBAJ&amp;source=kp_book_description">1</a>]. Definitions of fairness however are deeply rooted in human ethical principles, and so on value judgements that often depend critically on the context in which a machine learning model is being used. This practical dependence on value judgements manifests itself in the mathematics of quantitative fairness measures as a set of trade-offs between sometimes mutually incompatible definitions of fairness [<a href="https://arxiv.org/abs/1609.05807">2</a>]. Since fairness relies on context-dependent value judgements it is dangerous to treat quantitative fairness metrics as opaque black-box measures of fairness [<a href="https://arxiv.org/abs/1808.00023">3</a>], since doing so may obscure important value judgment choices.</p>
 <!--This article covers:
 
@@ -147,14 +161,20 @@
 3. How introducing a protected feature can help distiguish between label bias vs. feature bias. 
 4. Things you can't learn from a SHAP fairness explanation.-->
 
-<h2 id="How-SHAP-can-be-used-to-explain-various-measures-of-model-fairness">How SHAP can be used to explain various measures of model fairness<a class="anchor-link" href="#How-SHAP-can-be-used-to-explain-various-measures-of-model-fairness">&#182;</a></h2><p>This article is not about how to choose the correct measure of model fairness, but rather about explaining whatever metrics you have chosen. Which fairness metric is most appropriate depends the specifics of your context, such as what laws apply, how the outputs of the machine learning model impact people, and what value you place on various outcomes and hence tradeoffs. In many real-world situations it may be best to define your own fairness metric based on the values/costs of various potential outcomes that depend on the model's output. For this analysis we use the classic <a href="https://arxiv.org/pdf/1803.02453.pdf">demographic parity</a> metric, though the same analysis works with other metrics such as <a href="https://arxiv.org/pdf/1803.02453.pdf">equalized odds</a>, <a href="https://ttic.uchicago.edu/~nati/Publications/HardtPriceSrebro2016.pdf">equal opportunity</a>, or <a href="https://github.com/fairlearn/fairlearn/blob/master/TERMINOLOGY.md">equal quality of service</a>. Demographic parity states that the output of the machine learning model should be equal between two or more groups. The demographic parity difference is then a measure of how much disparity there is between model outcomes in two groups of samples. We use demographic parity for this scenario not because it is the right measure of fairness in most situations (it is often not), but because it is straightforward and commonly known. In our simulated case demographic parity is appropriate because in our simulation the true labels (will default on a loan) are statistically independent of sex (the sensitive class we use to check for fairness). So any disparity between men and women means one or both groups are being modeled incorrectly due to feature errors, labeling errors, or model errors.</p>
+<h2 id="How-SHAP-can-be-used-to-explain-various-measures-of-model-fairness">
+<a class="anchor" href="#How-SHAP-can-be-used-to-explain-various-measures-of-model-fairness" aria-hidden="true"><span class="octicon octicon-link"></span></a>How SHAP can be used to explain various measures of model fairness<a class="anchor-link" href="#How-SHAP-can-be-used-to-explain-various-measures-of-model-fairness">¶</a>
+</h2>
+<p>This article is not about how to choose the correct measure of model fairness, but rather about explaining whatever metrics you have chosen. Which fairness metric is most appropriate depends the specifics of your context, such as what laws apply, how the outputs of the machine learning model impact people, and what value you place on various outcomes and hence tradeoffs. In many real-world situations it may be best to define your own fairness metric based on the values/costs of various potential outcomes that depend on the model's output. For this analysis we use the classic <a href="https://arxiv.org/pdf/1803.02453.pdf">demographic parity</a> metric, though the same analysis works with other metrics such as <a href="https://arxiv.org/pdf/1803.02453.pdf">equalized odds</a>, <a href="https://ttic.uchicago.edu/~nati/Publications/HardtPriceSrebro2016.pdf">equal opportunity</a>, or <a href="https://github.com/fairlearn/fairlearn/blob/master/TERMINOLOGY.md">equal quality of service</a>. Demographic parity states that the output of the machine learning model should be equal between two or more groups. The demographic parity difference is then a measure of how much disparity there is between model outcomes in two groups of samples. We use demographic parity for this scenario not because it is the right measure of fairness in most situations (it is often not), but because it is straightforward and commonly known. In our simulated case demographic parity is appropriate because in our simulation the true labels (will default on a loan) are statistically independent of sex (the sensitive class we use to check for fairness). So any disparity between men and women means one or both groups are being modeled incorrectly due to feature errors, labeling errors, or model errors.</p>
 <p><strong>Since SHAP decomposes the model output into feature attributions with the same units as the original model output, we can first decompose the model output among each of the input features using SHAP, and then compute the demographic parity difference (or any other fairness metric) for each input feature seperately using the SHAP value for that feature.</strong> Because the SHAP values sum up to the model's output, the sum of the demographic parity differences of the SHAP values also sum up to the demographic parity difference of the whole model.</p>
 <!--To  will not explain
 
 The danger of treating quantitative fairness metrics as opaque, black-box measures of fairness is strikingly similar to a related problem of treating machine learning models themselves as opaque, black-box predictors. While using a black-box is reasonable in many cases, important problems and assumptions can often be hidden (and hence ignored) when users don't understand the reasons behind a model's behavior \cite{ribeiro2016should}. In response to this problem many explainable AI methods have been developed to help users understand the behavior of modern complex models \cite{vstrumbelj2014explaining,ribeiro2016should,lundberg2017unified}. Here we explore how to apply explainable AI methods to quantitative fairness metrics.-->
 
 
-<h2 id="What-SHAP-fairness-explanations-look-like-in-various-simulated-scenarios">What SHAP fairness explanations look like in various simulated scenarios<a class="anchor-link" href="#What-SHAP-fairness-explanations-look-like-in-various-simulated-scenarios">&#182;</a></h2><p>To help us explore the potential usefulness of explaining quantitative fairness metrics we consider a simple simulated scenario based on credit underwriting. In our simulation there are four underlying factors that drive the risk of default for a loan: income stability, income amount, spending restraint, and consistency. These underlying factors are not observed, but they variously influence four different observable features: job history, reported income, credit inquiries, and late payments. Using this simulation we generate random samples and then train a non-linear <a href="https://xgboost.ai/">XGBoost</a> classifier to predict the probability of default. The same process also works for any other model type supported by SHAP, just remember that explanations of more complicated models hide more of the model's details.</p>
+<h2 id="What-SHAP-fairness-explanations-look-like-in-various-simulated-scenarios">
+<a class="anchor" href="#What-SHAP-fairness-explanations-look-like-in-various-simulated-scenarios" aria-hidden="true"><span class="octicon octicon-link"></span></a>What SHAP fairness explanations look like in various simulated scenarios<a class="anchor-link" href="#What-SHAP-fairness-explanations-look-like-in-various-simulated-scenarios">¶</a>
+</h2>
+<p>To help us explore the potential usefulness of explaining quantitative fairness metrics we consider a simple simulated scenario based on credit underwriting. In our simulation there are four underlying factors that drive the risk of default for a loan: income stability, income amount, spending restraint, and consistency. These underlying factors are not observed, but they variously influence four different observable features: job history, reported income, credit inquiries, and late payments. Using this simulation we generate random samples and then train a non-linear <a href="https://xgboost.ai/">XGBoost</a> classifier to predict the probability of default. The same process also works for any other model type supported by SHAP, just remember that explanations of more complicated models hide more of the model's details.</p>
 <p>By introducing sex-specific reporting errors into a fully specified simulation we can observe how the biases caused by these errors are captured by fairness metrics. In our simulated case we can appropriatly use the demographic parity metric because in our simulation the true labels (will default on a loan) are statistically independent of sex (the sensitive class we use to check for fairness). If the true labels you are predicting (which might be different than the training labels you have access to) are not (marginally) statistically independent of the sensitive feature you are considering, then even a perfect model with no errors would fail demographic parity, and so you will likely want to consider other measures of fairness.</p>
 <!--This article explores how we can use modern explainable AI tools to enhance traditional quantitative measures of model fairness. It is practical and hands-on, so feel free to follow along in the associated [notebook]. I assume you have a basic understanding of how people measure fairness for machine learning models. If you have never before considered fairness in the context of machine learning, then I recommend starting with a basic introduction such as XXX. I am not writing this Here I do not  beforeIt is not meant to be a definitite  One futher disclaimer is that as the author of SHAP (a popular explainable AI tool) I am very familar with the strengths and weaknesses of explainable AI tools, but I do not consider myself a fairness expert. So consider this a thought-provoking guide on how explainable AI tools can enhance quantitative measures of model fairness
 
@@ -186,7 +206,7 @@ By introducing sex-specific reporting errors into the simulation we can observe 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">pl</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">shap</span>
-<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = 'retina'
 <span class="k">def</span> <span class="nf">run_credit_experiment</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">job_history_sex_impact</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">reported_income_sex_impact</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">income_sex_impact</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                           <span class="n">late_payments_sex_impact</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">default_rate_sex_impact</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                           <span class="n">include_brandx_purchase_score</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">include_sex</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -231,20 +251,20 @@ By introducing sex-specific reporting errors into the simulation we can observe 
     
     <span class="c1"># bundle everything into a data frame and define the labels based on the default rate and customer quality</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-        <span class="s2">&quot;Job history&quot;</span><span class="p">:</span> <span class="n">job_history</span><span class="p">,</span>
-        <span class="s2">&quot;Reported income&quot;</span><span class="p">:</span> <span class="n">reported_income</span><span class="p">,</span>
-        <span class="s2">&quot;Credit inquiries&quot;</span><span class="p">:</span> <span class="n">credit_inquiries</span><span class="p">,</span>
-        <span class="s2">&quot;Late payments&quot;</span><span class="p">:</span> <span class="n">late_payments</span>
+        <span class="s2">"Job history"</span><span class="p">:</span> <span class="n">job_history</span><span class="p">,</span>
+        <span class="s2">"Reported income"</span><span class="p">:</span> <span class="n">reported_income</span><span class="p">,</span>
+        <span class="s2">"Credit inquiries"</span><span class="p">:</span> <span class="n">credit_inquiries</span><span class="p">,</span>
+        <span class="s2">"Late payments"</span><span class="p">:</span> <span class="n">late_payments</span>
     <span class="p">})</span>
     <span class="n">default_rate</span> <span class="o">=</span> <span class="mf">0.40</span> <span class="o">+</span> <span class="n">sex</span> <span class="o">*</span> <span class="n">default_rate_sex_impact</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">customer_quality</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">customer_quality</span><span class="p">,</span> <span class="n">default_rate</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> 
     
     <span class="k">if</span> <span class="n">include_brandx_purchase_score</span><span class="p">:</span>
         <span class="n">brandx_purchase_score</span> <span class="o">=</span> <span class="n">sex</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-        <span class="n">X</span><span class="p">[</span><span class="s2">&quot;Brand X purchase score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">brandx_purchase_score</span>
+        <span class="n">X</span><span class="p">[</span><span class="s2">"Brand X purchase score"</span><span class="p">]</span> <span class="o">=</span> <span class="n">brandx_purchase_score</span>
     
     <span class="k">if</span> <span class="n">include_sex</span><span class="p">:</span>
-        <span class="n">X</span><span class="p">[</span><span class="s2">&quot;Sex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sex</span> <span class="o">+</span> <span class="mi">0</span>
+        <span class="n">X</span><span class="p">[</span><span class="s2">"Sex"</span><span class="p">]</span> <span class="o">=</span> <span class="n">sex</span> <span class="o">+</span> <span class="mi">0</span>
     
     <span class="c1"># build model</span>
     <span class="kn">import</span> <span class="nn">xgboost</span>
@@ -266,13 +286,17 @@ By introducing sex-specific reporting errors into the simulation we can observe 
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <!--## Scenario A: No reporting errors
 
 As a baseline experiment we refrain from introducing any sex-specific reporting errors. This results in no significant statistical parity difference between the credit score of men and women:-->
 
-<h2 id="Scenario-A:-No-reporting-errors">Scenario A: No reporting errors<a class="anchor-link" href="#Scenario-A:-No-reporting-errors">&#182;</a></h2><p>Our first experiment is a simple baseline check where we refrain from introducing any sex-specific reporting errors. While we could use any model output to measure demographic parity, we use the continuous log-odds score from a binary XGBoost classifier. As expected, this baseline experiment results in no significant demographic parity difference between the credit scores of men and women. We can see this by plotting the difference between the average credit score for women and men as a bar plot and noting that zero is close to the margin of error (note that negative values mean women have a lower average predicted risk than men, and positive values mean that women have a higher average predicted risk than men):</p>
+<h2 id="Scenario-A:-No-reporting-errors">
+<a class="anchor" href="#Scenario-A:-No-reporting-errors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scenario A: No reporting errors<a class="anchor-link" href="#Scenario-A:-No-reporting-errors">¶</a>
+</h2>
+<p>Our first experiment is a simple baseline check where we refrain from introducing any sex-specific reporting errors. While we could use any model output to measure demographic parity, we use the continuous log-odds score from a binary XGBoost classifier. As expected, this baseline experiment results in no significant demographic parity difference between the credit scores of men and women. We can see this by plotting the difference between the average credit score for women and men as a bar plot and noting that zero is close to the margin of error (note that negative values mean women have a lower average predicted risk than men, and positive values mean that women have a higher average predicted risk than men):</p>
 
 </div>
 </div>
@@ -287,7 +311,7 @@ As a baseline experiment we refrain from introducing any sex-specific reporting 
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">10000</span>
 <span class="n">shap_values_A</span><span class="p">,</span> <span class="n">sex_A</span><span class="p">,</span> <span class="n">X_A</span><span class="p">,</span> <span class="n">ev_A</span> <span class="o">=</span> <span class="n">run_credit_experiment</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
 <span class="n">model_outputs_A</span> <span class="o">=</span> <span class="n">ev_A</span> <span class="o">+</span> <span class="n">shap_values_A</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">glabel</span> <span class="o">=</span> <span class="s2">&quot;Demographic parity difference</span><span class="se">\n</span><span class="s2">of model output for women vs. men&quot;</span>
+<span class="n">glabel</span> <span class="o">=</span> <span class="s2">"Demographic parity difference</span><span class="se">\n</span><span class="s2">of model output for women vs. men"</span>
 <span class="n">xmin</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.8</span>
 <span class="n">xmax</span> <span class="o">=</span> <span class="mf">0.8</span>
 <span class="n">shap</span><span class="o">.</span><span class="n">group_difference_plot</span><span class="p">(</span><span class="n">shap_values_A</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">sex_A</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="n">xmax</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="n">glabel</span><span class="p">)</span>
@@ -320,7 +344,8 @@ height=123
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now we can use SHAP to decompose the model output among each of the model's input features and then compute the demographic parity difference on the component attributed to each feature. As noted above, because the SHAP values sum up to the model's output, the sum of the demographic parity differences of the SHAP values for each feature sum up to the demographic parity difference of the whole model. This means that the sum of the bars below equals the bar above (the demographic parity difference of our baseline scenario model).</p>
 
@@ -334,7 +359,7 @@ height=123
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">slabel</span> <span class="o">=</span> <span class="s2">&quot;Demographic parity difference</span><span class="se">\n</span><span class="s2">of SHAP values for women vs. men&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">slabel</span> <span class="o">=</span> <span class="s2">"Demographic parity difference</span><span class="se">\n</span><span class="s2">of SHAP values for women vs. men"</span>
 <span class="n">shap</span><span class="o">.</span><span class="n">group_difference_plot</span><span class="p">(</span><span class="n">shap_values_A</span><span class="p">,</span> <span class="n">sex_A</span><span class="p">,</span> <span class="n">X_A</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="n">xmax</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="n">slabel</span><span class="p">)</span>
 </pre></div>
 
@@ -365,9 +390,13 @@ height=269
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Scenario-B:-An-under-reporting-bias-for-women's-income">Scenario B: An under-reporting bias for women's income<a class="anchor-link" href="#Scenario-B:-An-under-reporting-bias-for-women's-income">&#182;</a></h2><p>In our baseline scenario we designed a simulation where sex had no impact on any of the features or labels used by the model. Here in scenario B we introduce an under-reporting bias for women's income into the simulation. The point here is not how realistic it would be for women's income to be under-reported in the real-world, but rather how we can identify that a sex-specific bias has been introduced and understand where it came from. By plotting the difference in average model output (default risk) between women and men we can see that the income under-reporting bias has created a significant demographic parity difference where women now have a higher risk of default than men:</p>
+<h2 id="Scenario-B:-An-under-reporting-bias-for-women's-income">
+<a class="anchor" href="#Scenario-B:-An-under-reporting-bias-for-women's-income" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scenario B: An under-reporting bias for women's income<a class="anchor-link" href="#Scenario-B:-An-under-reporting-bias-for-women's-income">¶</a>
+</h2>
+<p>In our baseline scenario we designed a simulation where sex had no impact on any of the features or labels used by the model. Here in scenario B we introduce an under-reporting bias for women's income into the simulation. The point here is not how realistic it would be for women's income to be under-reported in the real-world, but rather how we can identify that a sex-specific bias has been introduced and understand where it came from. By plotting the difference in average model output (default risk) between women and men we can see that the income under-reporting bias has created a significant demographic parity difference where women now have a higher risk of default than men:</p>
 
 </div>
 </div>
@@ -418,7 +447,8 @@ height=123
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If this were a real application, this demographic parity difference might trigger an in-depth analysis of the model to determine what might be causing the disparity. While this investigation is challenging given just a single demographic parity difference value, it is much easier given the per-feature statistical parity decomposition based on SHAP. Using SHAP we can see there is a significant bias coming from the reported income feature that is increasing the risk of women disproportionately to men. This allows us to quickly identify which feature has the reporting bias that is causing our model to violate demographic parity:</p>
 
@@ -462,16 +492,21 @@ height=269
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It is important to note at this point how our assumptions can impact the interpretation of SHAP fairness explanations. In our simulated scenario we know that women actually have identical income profiles to men, so when we see that the reported income feature is biased lower for women than for men, we know that has come from a bias in the measurement errors in the reported income feature. The best way to address this problem would be figure out how to debias the measurement errors in the reported income feature. Doing so would create a more accurate model that also has less demographic disparity. However, if we instead assume that women actually are making less money than men (and it is not just a reporting error), then we can't just "fix" the reported income feature. Instead we have to carefully consider how best to account for real differences in default risk between two protected groups. It is impossible to determine which of these two situations is happening using just the SHAP fairness explanation, since in both cases the reported income feature will be responsible for an observed disparity between the predicted risks of men and women.</p>
 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Scenario-C:-An-under-reporting-bias-for-women's-late-payments">Scenario C: An under-reporting bias for women's late payments<a class="anchor-link" href="#Scenario-C:-An-under-reporting-bias-for-women's-late-payments">&#182;</a></h2><p>To verify that SHAP demographic parity explanations can correctly detect disparities regardless of the direction of effect or source feature, we repeat our previous experiment but instead of an under-reporting bias for income, we introduce an under-reporting bias for women's late payment rates. This results in a significant demographic parity difference for the model's output where now women have a lower average default risk than men:</p>
+<h2 id="Scenario-C:-An-under-reporting-bias-for-women's-late-payments">
+<a class="anchor" href="#Scenario-C:-An-under-reporting-bias-for-women's-late-payments" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scenario C: An under-reporting bias for women's late payments<a class="anchor-link" href="#Scenario-C:-An-under-reporting-bias-for-women's-late-payments">¶</a>
+</h2>
+<p>To verify that SHAP demographic parity explanations can correctly detect disparities regardless of the direction of effect or source feature, we repeat our previous experiment but instead of an under-reporting bias for income, we introduce an under-reporting bias for women's late payment rates. This results in a significant demographic parity difference for the model's output where now women have a lower average default risk than men:</p>
 
 </div>
 </div>
@@ -515,7 +550,8 @@ height=123
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And as we would hope, the SHAP explanations correctly highlight the late payments feature as the cause of the model's demographic parity difference, as well as the direction of the effect:</p>
 
@@ -559,9 +595,13 @@ height=269
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Scenario-D:-An-under-reporting-bias-for-women's-default-rates">Scenario D: An under-reporting bias for women's default rates<a class="anchor-link" href="#Scenario-D:-An-under-reporting-bias-for-women's-default-rates">&#182;</a></h2><p>The experiments above focused on introducing reporting errors for specific input features. Next we consider what happens when we introduce reporting errors on the training labels through an under-reporting bias on women's default rates (which means defaults are less likely to be reported for women than men). Interestingly, for our simulated scenario this results in no significant demographic parity differences in the model's output:</p>
+<h2 id="Scenario-D:-An-under-reporting-bias-for-women's-default-rates">
+<a class="anchor" href="#Scenario-D:-An-under-reporting-bias-for-women's-default-rates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scenario D: An under-reporting bias for women's default rates<a class="anchor-link" href="#Scenario-D:-An-under-reporting-bias-for-women's-default-rates">¶</a>
+</h2>
+<p>The experiments above focused on introducing reporting errors for specific input features. Next we consider what happens when we introduce reporting errors on the training labels through an under-reporting bias on women's default rates (which means defaults are less likely to be reported for women than men). Interestingly, for our simulated scenario this results in no significant demographic parity differences in the model's output:</p>
 
 </div>
 </div>
@@ -605,7 +645,8 @@ height=123
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We also see no evidence of any demographic parity differences in the SHAP explanations:</p>
 
@@ -649,9 +690,13 @@ height=269
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Scenario-E:-An-under-reporting-bias-for-women's-default-rates,-take-2">Scenario E: An under-reporting bias for women's default rates, take 2<a class="anchor-link" href="#Scenario-E:-An-under-reporting-bias-for-women's-default-rates,-take-2">&#182;</a></h2><p>It may at first be surprising that no statistical parity differences were caused when we introduced an under-reporting bias on women's default rates. This is because none of the four features in our simulation are significantly correlated with sex, so none of them could be effectively used to model the bias we introduced into the training labels. If we now instead provide a new feature (brand X purchase score) to the model that is correlated with sex, then we see a statistical parity difference emerge as that feature is used by the model to capture the sex-specific bias in the training labels:</p>
+<h2 id="Scenario-E:-An-under-reporting-bias-for-women's-default-rates,-take-2">
+<a class="anchor" href="#Scenario-E:-An-under-reporting-bias-for-women's-default-rates,-take-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scenario E: An under-reporting bias for women's default rates, take 2<a class="anchor-link" href="#Scenario-E:-An-under-reporting-bias-for-women's-default-rates,-take-2">¶</a>
+</h2>
+<p>It may at first be surprising that no statistical parity differences were caused when we introduced an under-reporting bias on women's default rates. This is because none of the four features in our simulation are significantly correlated with sex, so none of them could be effectively used to model the bias we introduced into the training labels. If we now instead provide a new feature (brand X purchase score) to the model that is correlated with sex, then we see a statistical parity difference emerge as that feature is used by the model to capture the sex-specific bias in the training labels:</p>
 
 </div>
 </div>
@@ -704,7 +749,8 @@ height=123
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>When we explain the statistical parity difference with SHAP we see that, as expected, the brand X purchase score feature drives the difference. In this case it is not because we have a bias in how we measure the brand X purchase score feature, but rather because we have a bias in our training label that gets captured by any input features that are sufficiently correlated with sex:</p>
 
@@ -748,9 +794,13 @@ height=318
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Scenario-F:-Teasing-apart-multiple-under-reporting-biases">Scenario F: Teasing apart multiple under-reporting biases<a class="anchor-link" href="#Scenario-F:-Teasing-apart-multiple-under-reporting-biases">&#182;</a></h2><p>When there is a single cause of reporting bias then both the classic demographic parity test on the model's output, and the SHAP explanation of the demographic parity test capture the same bias effect (though the SHAP explanation can often have more statistical significance since it isolates the feature causing the bias). But what happens when there are multiple causes of bias occurring in a dataset? In this experiment we introduce two such biases, an under-reporting of women's default rates, and an under-reporting of women's job history. These biases tend to offset each other in the global average and so a statistical parity test on the model's output shows no measurable disparity:</p>
+<h2 id="Scenario-F:-Teasing-apart-multiple-under-reporting-biases">
+<a class="anchor" href="#Scenario-F:-Teasing-apart-multiple-under-reporting-biases" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scenario F: Teasing apart multiple under-reporting biases<a class="anchor-link" href="#Scenario-F:-Teasing-apart-multiple-under-reporting-biases">¶</a>
+</h2>
+<p>When there is a single cause of reporting bias then both the classic demographic parity test on the model's output, and the SHAP explanation of the demographic parity test capture the same bias effect (though the SHAP explanation can often have more statistical significance since it isolates the feature causing the bias). But what happens when there are multiple causes of bias occurring in a dataset? In this experiment we introduce two such biases, an under-reporting of women's default rates, and an under-reporting of women's job history. These biases tend to offset each other in the global average and so a statistical parity test on the model's output shows no measurable disparity:</p>
 
 </div>
 </div>
@@ -804,7 +854,8 @@ height=123
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>However, if we look at the SHAP explanation of the statistical parity difference we clearly see both (counteracting) biases:</p>
 
@@ -848,16 +899,21 @@ height=318
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Identifying multiple potentially offsetting bias effects can be important since while on average there is no disparate impact on men or women, there is disparate impact on individuals. For example, in this simulation women who have not shopped at brand X will receive a lower credit score than they should have because of the bias present in job history reporting.</p>
 
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="How-introducing-a-protected-feature-can-help-distinguish-between-label-bias-and-feature-bias">How introducing a protected feature can help distinguish between label bias and feature bias<a class="anchor-link" href="#How-introducing-a-protected-feature-can-help-distinguish-between-label-bias-and-feature-bias">&#182;</a></h2><p>In scenario F we were able to pick apart two distict forms of bias, one coming from job history under-reporting and one coming from default rate under-reporting. However, the bias from default rate under-reporting was not attributed to the default rate label, but rather to the brand X purchase score feature that happened to be correlated with sex. This still leaves us with some uncertainty about the true sources of statistical parity differences, since any difference attributed to an input feature could be due to an issue with that feature, or due to an issue with the training labels.</p>
+<h2 id="How-introducing-a-protected-feature-can-help-distinguish-between-label-bias-and-feature-bias">
+<a class="anchor" href="#How-introducing-a-protected-feature-can-help-distinguish-between-label-bias-and-feature-bias" aria-hidden="true"><span class="octicon octicon-link"></span></a>How introducing a protected feature can help distinguish between label bias and feature bias<a class="anchor-link" href="#How-introducing-a-protected-feature-can-help-distinguish-between-label-bias-and-feature-bias">¶</a>
+</h2>
+<p>In scenario F we were able to pick apart two distict forms of bias, one coming from job history under-reporting and one coming from default rate under-reporting. However, the bias from default rate under-reporting was not attributed to the default rate label, but rather to the brand X purchase score feature that happened to be correlated with sex. This still leaves us with some uncertainty about the true sources of statistical parity differences, since any difference attributed to an input feature could be due to an issue with that feature, or due to an issue with the training labels.</p>
 <p>It turns out that in this case we can help disentangle label bias from feature bias by introducing sex as a variable directly into the model. The goal of introducing sex as an input feature is to cause the label bias to fall entirely on the sex feature, leaving the feature biases untouched. So we can then distinguish between label biases and feature biases by comparing the results of scenario F above to our new scenario G below. This of course creates an even stronger demographic parity difference than we had before, but that is fine since our goal here is not bias mitigation, but rather bias understanding.</p>
 
 </div>
@@ -912,7 +968,8 @@ height=123
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The SHAP explanation for scenario G shows that all of the demographic parity difference that used to be attached to the brand X purchase score feature in scenario F has now moved to the sex feature, while none of the demographic parity difference attached to the job history feature in scenario F has moved. This can be interpreted to mean that all of the disparity attributed to brand X purchase score in scenario F was due to label bias, while all of the disparity attributed to job history in scenario F was due to feature bias.</p>
 
@@ -956,13 +1013,18 @@ height=367
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2><!--## Things you can't learn from a SHAP fairness explanation-->
+<h2 id="Conclusion">
+<a class="anchor" href="#Conclusion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusion<a class="anchor-link" href="#Conclusion">¶</a>
+</h2>
+<!--## Things you can't learn from a SHAP fairness explanation-->
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Fairness is a complex topic where clean mathematical answers almost always come with caveats and depend on ethical value judgements. This means that it is particularly important to not just use fairness metrics as black-boxes, but rather seek to understand how these metrics are computed and what aspects of your model and training data are impacting any disparities you observe. Decomposing quantitative fairness metrics using SHAP can reduce their opacity when the metrics are driven by measurement biases effecting only a few features. I hope you find the fairness explanations we demonstrated here help you better wrestle with the underlying value judgements inherent in fairness evaluation, and so help reduce the risk of unintended consequences that comes when we use fairness metrics in real world contexts.</p>
 
@@ -972,7 +1034,15 @@ height=367
 </div>
 
 
-  </div><a class="u-url" href="/fastpages/2020/01/28/Explaining-Quantitative-Measures-of-Fairness.html" hidden></a>
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="andrekos/fastpages"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/fastpages/explainableai/tools/datascience/2020/01/28/Explaining-Quantitative-Measures-of-Fairness.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
