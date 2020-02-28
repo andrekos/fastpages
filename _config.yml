@@ -58,6 +58,7 @@ plugins:
   - jekyll-twitter-plugin
   - jekyll-relative-links
   - jekyll-seo-tag
+  - jekyll-paginate
 
 titles_from_headings:
   enabled:     true
