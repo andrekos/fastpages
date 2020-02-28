@@ -23,7 +23,6 @@ group :jekyll_plugins do
 end
 
 gem "jekyll-github-metadata"
-gem "jekyll-simple-dark"
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
 # and associated library.

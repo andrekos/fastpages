@@ -47,8 +47,8 @@ exclude:
 
 # Everything below here should be left alone. Modifications may break fastpages
 future: true
-#theme: minima
-theme: jekyll-simple-dark
+theme: minima
+
 plugins:
   - jekyll-feed
   - jekyll-gist
@@ -58,7 +58,6 @@ plugins:
   - jekyll-twitter-plugin
   - jekyll-relative-links
   - jekyll-seo-tag
-  - jekyll-paginate
 
 titles_from_headings:
   enabled:     true
